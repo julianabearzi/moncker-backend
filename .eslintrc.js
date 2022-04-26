@@ -9,5 +9,11 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
-  rules: { 'consistent-return': 'off' },
+  rules: {
+    'consistent-return': 'off',
+    'no-underscore-dangle': 'off',
+    'no-return-await': 'off',
+    'func-names': 'off',
+    'no-unsafe-optional-chaining': 'off',
+  },
 };

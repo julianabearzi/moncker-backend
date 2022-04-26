@@ -2,10 +2,15 @@ const { check } = require('express-validator');
 const { validator } = require('../middlewares/validate');
 
 const ValidateUser = [
-  check('username')
+  check('firstname')
     .isString()
     .trim()
-    .withMessage('Please enter a valid username')
+    .withMessage('Please enter a valid firstname')
+    .optional(),
+  check('lastname')
+    .isString()
+    .trim()
+    .withMessage('Please enter a valid lastname')
     .optional(),
   check('email')
     .isString()
