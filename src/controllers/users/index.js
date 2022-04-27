@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 const { generateToken } = require('../../middlewares/generateToken');
 const Users = require('../../model/Users');
 
