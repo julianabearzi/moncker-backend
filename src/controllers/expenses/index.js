@@ -29,7 +29,7 @@ const getAllExpenses = async (req, res) => {
   try {
     const response = await Expenses.paginate(
       {},
-      { limit: 10, page: Number(page) },
+      { limit: 10, page: Number(page), populate: 'user' },
     );
 
     return res.status(200).json(response);
