@@ -19,6 +19,99 @@ const createIncome = async (req, res) => {
   }
 };
 
+const getAllIncome = async (req, res) => {
+  try {
+    const response = await Income.find();
+
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      msg: 'Internal Server Error',
+    });
+  }
+};
+
+const getIncomeById = async (req, res) => {
+  try {
+    const response = await Income.findOne({ _id: req.params.id });
+
+    if (!response || response.length === 0) {
+      return res.status(404).json({
+        error: true,
+        msg: `No income with the id of ${req.params.id}`,
+      });
+    }
+
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      msg: 'Internal Server Error',
+    });
+  }
+};
+
+const updateIncome = async (req, res) => {
+  try {
+    if (
+      req.body.description === ''
+      || req.body.amount === ''
+      || req.body.user === ''
+    ) {
+      return res.status(400).json({
+        error: true,
+        msg: 'Missing fields to update income',
+      });
+    }
+    const incomeUpdated = await Income.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true },
+    );
+
+    if (!incomeUpdated || incomeUpdated.length === 0) {
+      return res.status(404).json({
+        error: true,
+        msg: `No income with the id ${req.params.id}`,
+      });
+    }
+
+    return res.status(201).json(incomeUpdated);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      msg: 'Internal Server Error',
+    });
+  }
+};
+
+const deleteIncome = async (req, res) => {
+  try {
+    const incomeFound = await Income.findOneAndRemove({
+      _id: req.params.id,
+    });
+
+    if (!incomeFound || incomeFound.length === 0) {
+      return res.status(404).json({
+        error: true,
+        msg: `No income with the id ${req.params.id}`,
+      });
+    }
+
+    return res.status(202).json(incomeFound);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      msg: 'Internal Server Error',
+    });
+  }
+};
+
 module.exports = {
   createIncome,
+  getAllIncome,
+  getIncomeById,
+  updateIncome,
+  deleteIncome,
 };
