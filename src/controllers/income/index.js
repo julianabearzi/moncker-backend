@@ -20,8 +20,12 @@ const createIncome = async (req, res) => {
 };
 
 const getAllIncome = async (req, res) => {
+  const { page } = req.query;
   try {
-    const response = await Income.find();
+    const response = await Income.paginate(
+      {},
+      { limit: 10, page: Number(page) },
+    );
 
     return res.status(200).json(response);
   } catch (error) {

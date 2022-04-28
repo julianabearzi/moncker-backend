@@ -5,18 +5,32 @@ const expenseController = require('../../controllers/expenses');
 const router = express.Router();
 const { validator } = require('../../middlewares/validate');
 const { ValidateExpense } = require('../../validators/expenses');
+const { authMiddleware } = require('../../middlewares/authMiddleware');
 
-router.route('/').get(expenseController.getAllExpenses);
-router.route('/').post(ValidateExpense, expenseController.createExpense);
+router.route('/').get(authMiddleware, expenseController.getAllExpenses);
+router
+  .route('/')
+  .post(authMiddleware, ValidateExpense, expenseController.createExpense);
 router
   .route('/:id')
-  .get(param('id').isMongoId(), validator, expenseController.getExpenseById);
+  .get(
+    authMiddleware,
+    param('id').isMongoId(),
+    validator,
+    expenseController.getExpenseById,
+  );
 router
   .route('/:id')
-  .delete(param('id').isMongoId(), validator, expenseController.deleteExpense);
+  .delete(
+    authMiddleware,
+    param('id').isMongoId(),
+    validator,
+    expenseController.deleteExpense,
+  );
 router
   .route('/:id')
   .put(
+    authMiddleware,
     param('id').isMongoId(),
     ValidateExpense,
     expenseController.updateExpense,

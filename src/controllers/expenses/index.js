@@ -25,8 +25,12 @@ const createExpense = async (req, res) => {
 };
 
 const getAllExpenses = async (req, res) => {
+  const { page } = req?.query;
   try {
-    const response = await Expenses.find();
+    const response = await Expenses.paginate(
+      {},
+      { limit: 10, page: Number(page) },
+    );
 
     return res.status(200).json(response);
   } catch (error) {
