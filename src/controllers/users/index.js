@@ -71,8 +71,80 @@ const loginUser = async (req, res) => {
   }
 };
 
+const userProfile = async (req, res) => {
+  try {
+    const profile = await Users.findById(req?.user?._id);
+    res.json(profile);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      msg: 'Internal Server Error',
+    });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    if (
+      req.body.firstname === ''
+      || req.body.lastname === ''
+      || req.body.email === ''
+      || req.body.password === ''
+    ) {
+      return res.status(400).json({
+        error: true,
+        msg: 'Missing fields to update user',
+      });
+    }
+    const userUpdated = await Users.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true },
+    );
+
+    if (!userUpdated || userUpdated.length === 0) {
+      return res.status(404).json({
+        error: true,
+        msg: `No user with the id ${req.params.id}`,
+      });
+    }
+
+    return res.status(201).json(userUpdated);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      msg: 'Internal Server Error',
+    });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const userFound = await Users.findOneAndRemove({
+      _id: req.params.id,
+    });
+
+    if (!userFound || userFound.length === 0) {
+      return res.status(404).json({
+        error: true,
+        msg: `No user with the id ${req.params.id}`,
+      });
+    }
+
+    return res.status(202).json(userFound);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      msg: 'Internal Server Error',
+    });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   loginUser,
+  userProfile,
+  updateUser,
+  deleteUser,
 };
