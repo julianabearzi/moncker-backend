@@ -24,8 +24,26 @@ const userSchema = mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true },
+  {
+    toObject: { virtuals: true },
+    toJSON: {
+      virtuals: true,
+    },
+    timestamps: true,
+  },
 );
+
+userSchema.virtual('expenses', {
+  ref: 'Expenses',
+  foreignField: 'user',
+  localField: '_id',
+});
+
+userSchema.virtual('income', {
+  ref: 'Income',
+  foreignField: 'user',
+  localField: '_id',
+});
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {

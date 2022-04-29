@@ -73,7 +73,10 @@ const loginUser = async (req, res) => {
 
 const userProfile = async (req, res) => {
   try {
-    const profile = await Users.findById(req?.user?._id);
+    const profile = await Users.findById(req?.user?._id).populate([
+      'expenses',
+      'income',
+    ]);
     res.json(profile);
   } catch (error) {
     return res.status(500).json({
