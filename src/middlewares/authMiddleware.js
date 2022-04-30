@@ -1,25 +1,21 @@
+/* eslint-disable no-underscore-dangle */
 const jwt = require('jsonwebtoken');
-const User = require('../model/Users');
 
-const authMiddleware = async (req, res, next) => {
-  let token;
-  if (req?.headers?.authorization?.startsWith('Bearer')) {
-    token = req?.headers?.authorization?.split(' ')[1];
-    try {
-      if (token) {
-        const decodedUser = jwt.verify(token, process.env.JWT_KEY);
-        const user = await User.findById(decodedUser?.id);
-        req.user = user;
-        next();
-      }
-    } catch {
-      return res.status(401).json({ msg: 'Not Authorized token expired' });
-    }
-  } else {
-    return res
-      .status(500)
-      .json({ msg: 'There is no token attached to the header' });
+const authMiddleware = (req, res, next) => {
+  const token = req.header('Authorization');
+  if (!token) {
+    return res.status(401).json({ ok: false });
   }
+
+  try {
+    const { _id, email } = jwt.verify(token, process.env.JWT_KEY);
+
+    req._id = _id;
+    req.email = email;
+  } catch (error) {
+    return res.status(401).json();
+  }
+  next();
 };
 
 module.exports = {

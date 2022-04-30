@@ -52,13 +52,14 @@ const loginUser = async (req, res) => {
       email,
     });
     if (userFound && (await userFound?.isPasswordMatch(password))) {
+      const token = await generateToken(userFound._id, userFound.email);
       res.status(200).json({
         _id: userFound?._id,
         firstname: userFound?.firstname,
         lastname: userFound?.lastname,
         email: userFound?.email,
         isAdmin: userFound?.isAdmin,
-        token: generateToken(userFound?._id),
+        token,
       });
     } else {
       res.status(401).json({ errors: ['Invalid Login Credentials'] });
@@ -143,6 +144,17 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const revalidateToken = async (req, res) => {
+  const { _id, email } = req;
+  const token = await generateToken(_id, email);
+
+  res.json({
+    _id,
+    email,
+    token,
+  });
+};
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -150,4 +162,5 @@ module.exports = {
   userProfile,
   updateUser,
   deleteUser,
+  revalidateToken,
 };

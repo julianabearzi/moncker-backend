@@ -8,6 +8,7 @@ const { validator } = require('../../middlewares/validate');
 const { ValidateUser } = require('../../validators/users');
 
 router.route('/').get(authMiddleware, usersController.getAllUsers);
+router.route('/renew').get(authMiddleware, usersController.revalidateToken);
 router.route('/register').post(ValidateUser, usersController.createUser);
 router
   .route('/login')
