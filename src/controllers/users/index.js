@@ -36,7 +36,15 @@ const createUser = async (req, res) => {
     }
     const user = new Users(req.body);
     const newUser = await user.save();
-    return res.status(201).json(newUser);
+    const token = await generateToken(newUser._id, newUser.email);
+    return res.status(201).json({
+      _id: newUser?._id,
+      firstname: newUser?.firstname,
+      lastname: newUser?.lastname,
+      email: newUser?.email,
+      isAdmin: newUser?.isAdmin,
+      token,
+    });
   } catch (error) {
     return res.status(500).json({
       error: true,
