@@ -82,7 +82,7 @@ const loginUser = async (req, res) => {
 
 const userProfile = async (req, res) => {
   try {
-    const profile = await Users.findById(req?.user?._id).populate([
+    const profile = await Users.findById(req?._id).populate([
       'expenses',
       'income',
     ]);
