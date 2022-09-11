@@ -163,6 +163,23 @@ const revalidateToken = async (req, res) => {
   });
 };
 
+const updateFavorites = async (req, res) => {
+  try {
+    const userFavoritesUpdated = await Users.findOneAndUpdate(
+      { _id: req.params.id },
+      { favorites: req.body.favorites },
+      { new: true },
+    );
+
+    return res.status(201).json(userFavoritesUpdated);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      msg: 'Internal Server Error',
+    });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -171,4 +188,5 @@ module.exports = {
   updateUser,
   deleteUser,
   revalidateToken,
+  updateFavorites,
 };

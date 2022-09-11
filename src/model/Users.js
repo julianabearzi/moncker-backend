@@ -23,6 +23,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    favorites: {
+      type: [String],
+      default: [],
+    },
   },
   {
     toObject: { virtuals: true },

@@ -36,5 +36,13 @@ router
     ValidateUser,
     usersController.updateUser,
   );
+router
+  .route('/favorites/:id')
+  .put(
+    authMiddleware,
+    param('id').isMongoId(),
+    ValidateUser,
+    usersController.updateFavorites,
+  );
 
 module.exports = router;
