@@ -63,6 +63,7 @@ const createUser = async (req, res) => {
       lastname: newUser?.lastname,
       email: newUser?.email,
       isAdmin: newUser?.isAdmin,
+      isPremium: newUser?.isPremium,
       token,
     });
   } catch (error) {
@@ -87,6 +88,7 @@ const loginUser = async (req, res) => {
         lastname: userFound?.lastname,
         email: userFound?.email,
         isAdmin: userFound?.isAdmin,
+        isPremium: userFound?.isPremium,
         token,
       });
     } else {
@@ -188,7 +190,7 @@ const updateFavorites = async (req, res) => {
     const userFavoritesUpdated = await Users.findOneAndUpdate(
       { _id: req.params.id },
       { favorites: req.body.favorites },
-      { new: true },
+      //  { new: true },
     );
 
     return res.status(201).json(userFavoritesUpdated);

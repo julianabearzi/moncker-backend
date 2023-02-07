@@ -15,5 +15,6 @@ module.exports = {
     'no-return-await': 'off',
     'func-names': 'off',
     'no-unsafe-optional-chaining': 'off',
+    'no-undef': 'off',
   },
 };
