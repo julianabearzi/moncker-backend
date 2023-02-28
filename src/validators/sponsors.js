@@ -8,17 +8,6 @@ const ValidateSponsor = [
     .trim()
     .withMessage('Please enter a valid name')
     .optional(),
-  check('phone')
-    .isNumeric()
-    .trim()
-    .withMessage('Please enter a valid phone')
-    .optional(),
-  check('email')
-    .isString()
-    .isEmail()
-    .trim()
-    .withMessage('Please enter a valid email')
-    .optional(),
 
   (req, res, next) => {
     validator(req, res, next);
